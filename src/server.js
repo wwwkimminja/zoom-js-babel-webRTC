@@ -19,7 +19,10 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer)
 
 io.on("connection", socket => {
-  console.log(socket)
+  socket.on("enter_room", (roomName, done) => {
+    socket.join(roomName);
+    done();
+  })
 })
 
 // const wss = new WebSocket.Server({ server });
