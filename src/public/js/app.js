@@ -144,7 +144,7 @@ socket.on("ice", (ice) => {
 function makeConnection() {
   myPeerConnection = new RTCPeerConnection()
   myPeerConnection.addEventListener("icecandidate", handleIce)
-  myPeerConnection.addEventListener("addstream", handleAddStream)
+  myPeerConnection.addEventListener("track", handleTrack)
   myStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, myStream))
 }
 
@@ -153,9 +153,9 @@ function handleIce(data) {
   socket.emit("ice", data.candidate, roomName)
 }
 
-function handleAddStream(data) {
-  console.log("got  stream from my peer")
-  console.log("Peer's stream", data.stream)
+function handleTrack(data) {
+  console.log("got  track from my peer", data.track)
+  console.log("got  streams from my peer", data.streams[0])
   const peerFace = document.getElementById("peerFace")
-  peerFace.srcObject = data.stream
+  peerFace.srcObject = data.streams[0]
 }
